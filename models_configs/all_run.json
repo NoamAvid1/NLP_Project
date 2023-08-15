@@ -1,0 +1,13 @@
+{
+  "bert": {
+    "models": ["google/multiberts-seed_0"],
+    "checkpoints": ["step_40k", "step_1500k"]
+  },
+  "pythia": {
+    "models": ["EleutherAI/pythia-70m","EleutherAI/pythia-410m"],
+    "checkpoints": [
+      "step1000",
+      "step143000"
+    ]
+  }
+}

@@ -49,10 +49,10 @@ def get_pythia_scores(model_name, model_revision, text, correct_word, false_word
   print(inputs)
   scores = model(**inputs).logits[0][-1]
   probs = scores.softmax(dim=0)
-  if len(tokenizer.encode(correct_word)) == 1:
+  if len(tokenizer.encode(correct_word)) > 1:
       print(f"Couldn't use word {correct_word}, len of encoding > 1")
       return
-  if len(tokenizer.encode(false_word)) == 1:
+  if len(tokenizer.encode(false_word)) > 1:
       print(f"Couldn't use word {false_word}, len of encoding > 1")
       return
 
@@ -63,7 +63,7 @@ def get_pythia_scores(model_name, model_revision, text, correct_word, false_word
 
 
 if __name__ == '__main__':
-    get_bert_scores('google/multiberts-seed_4-step_20k', "The plumber that called Joy drove a grey truck. Therefore, [MASK] [MASK] drove a grey truck.",
-                    "plumber", "John", 2)
-    # print(get_pythia_scores("EleutherAI/pythia-70m-deduped","step3000", "Jfsdsffa ", "model", "robot" ))
+    # get_bert_scores('google/multiberts-seed_4-step_20k', "The plumber that called Joy drove a grey truck. Therefore, [MASK] [MASK] drove a grey truck.",
+    #                 "plumber", "John", 2)
+    print(get_pythia_scores("EleutherAI/pythia-70m-deduped","step100000", "Once upon a time in a","castle", "far" ))
     # print(get_pythia_scores("EleutherAI/pythia-70m-deduped", "step3000", "Jfsdsff ", "model", "robot"))
