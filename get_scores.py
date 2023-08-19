@@ -5,10 +5,6 @@ import torch
 import pandas as pd
 
 
-def get_df_scores():
-    #todo: complete
-    return
-
 
 def get_bert_scores(model_seed_and_step, text, correct_word, false_word, num_of_masks):
     """

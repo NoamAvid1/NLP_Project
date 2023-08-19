@@ -75,18 +75,15 @@ def run_model_and_save(model_type, models_config, df):
             else:
                 model_df[['correct_answer_score', 'false_answer_score']] = model_df.apply(
                     lambda row: get_df_pythia_scores(model, checkpoint, row), axis=1, result_type='expand')
-            file_name = f'output_{model.replace("/", "_")}_{checkpoint}.csv'
+            file_name = f'experiment_results/output_{model.replace("/", "_")}_{checkpoint}.csv'
             model_df.to_csv(file_name, index=False)
             print(f"saved result to {file_name}")
 
 
 if __name__ == '__main__':
-    # df = pd.read_csv('experiment_sentences_preprocessed_15.8.csv')
-    df = pd.read_excel("demo.xlsx")
-    # df = df[df["num_of_masks"] == 1]
-    # df[['correct_answer_score_bert','false_answer_score_bert']] = df.apply(lambda row:get_df_bert_scores('google/multiberts-seed_4-step_20k', row), axis=1, result_type='expand')
-    # df[['correct_answer_score_pythia','false_answer_score_pythia']] = df.apply(lambda row:get_df_pythia_scores("EleutherAI/pythia-70m-deduped","step20000", row), axis=1, result_type='expand')
-    # df.to_excel('output_15_8.xlsx', index=False)
+    df = pd.read_csv('experiment_sentences_preprocessed_15.8.csv')
+    # df = pd.read_excel("demo.xlsx")
+    df = df[df["num_of_masks"] == 1]
     models_config = {}
     with open("models_configs/all_run.json") as f:
             models_config = json.load(f)
