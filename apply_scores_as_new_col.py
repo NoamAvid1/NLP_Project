@@ -47,17 +47,21 @@ def get_df_pythia_scores(model_name, model_revision, row):
     inputs = tokenizer(row['pythia_question'], return_tensors="pt")
     scores = model(**inputs).logits[0][-1]
     probs = scores.softmax(dim=0)
-    # check if the answers are in the dictionary:
-    if len(tokenizer.encode(row['correct_answer'])) > 1 or len(tokenizer.encode(row['false_answer'])) > 1:
-        return pd.NA, pd.NA
-    false_word_score = probs[tokenizer.encode(row['false_answer'])[0]].item()
-    if row['num_of_masks'] == 1:
-        correct_word_score = probs[tokenizer.encode(row['correct_answer'])[0]].item()
-    else:
-        new_inputs = tokenizer(row['pythia_question'] + "the ", return_tensors="pt")
-        new_scores = model(**new_inputs).logits[0][-3]  # todo: fix
-        new_probs = new_scores.softmax(dim=0)
-        correct_word_score = new_probs[tokenizer.encode(row['correct_answer'])[0]].item()
+    # taking the first different token
+    i = 0
+    correct_word_token = tokenizer.encode(row['correct_answer'])[i]
+    false_word_token = tokenizer.encode(row['false_answer'])[i]
+    print(tokenizer.decode(correct_word_token), tokenizer.decode(false_word_token))
+    while correct_word_token == false_word_token:
+        print(correct_word_token, false_word_token)
+        i += 1
+        if len(tokenizer.encode(row['correct_answer'])) - 1 < i or len(tokenizer.encode(row['false_answer'])) - 1 < i:
+            return pd.NA, pd.NA
+        correct_word_token = tokenizer.encode(row['correct_answer'])[i]
+        false_word_token = tokenizer.encode(row['false_answer'])[i]
+
+    false_word_score = probs[false_word_token].item()
+    correct_word_score = probs[correct_word_token].item()
     return correct_word_score, false_word_score
 
 
@@ -81,8 +85,8 @@ def run_model_and_save(model_type, models_config, df):
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('experiment_sentences_preprocessed_15.8.csv')
-    # df = pd.read_excel("demo.xlsx")
+    #df = pd.read_csv('experiment_sentences_preprocessed_15.8.csv')
+    df = pd.read_excel("demo.xlsx")
     df = df[df["num_of_masks"] == 1]
     models_config = {}
     with open("models_configs/all_run.json") as f:

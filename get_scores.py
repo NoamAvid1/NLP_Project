@@ -45,21 +45,28 @@ def get_pythia_scores(model_name, model_revision, text, correct_word, false_word
   print(inputs)
   scores = model(**inputs).logits[0][-1]
   probs = scores.softmax(dim=0)
-  if len(tokenizer.encode(correct_word)) > 1:
-      print(f"Couldn't use word {correct_word}, len of encoding > 1")
-      return
-  if len(tokenizer.encode(false_word)) > 1:
-      print(f"Couldn't use word {false_word}, len of encoding > 1")
-      return
+
+  i = 0
+  correct_word_token = tokenizer.encode(correct_word)[i]
+  false_word_token = tokenizer.encode(false_word)[i]
+  print(tokenizer.decode(correct_word_token), tokenizer.decode(false_word_token))
+  while correct_word_token == false_word_token:
+      print(correct_word_token, false_word_token)
+      i += 1
+      if len(tokenizer.encode(correct_word)) - 1 < i or len(tokenizer.encode(false_word)) - 1 < i:
+          print("one of the answers is prefix of the other")
+          return
+      correct_word_token = tokenizer.encode(correct_word)[i]
+      false_word_token = tokenizer.encode(false_word)[i]
 
 
-  correct_word_score = probs[tokenizer.encode(correct_word)[0]].item()
-  false_word_score = probs[tokenizer.encode(false_word)[0]].item()
+  correct_word_score = probs[correct_word_token].item()
+  false_word_score = probs[false_word_token].item()
   return correct_word_score, false_word_score
 
 
 if __name__ == '__main__':
     # get_bert_scores('google/multiberts-seed_4-step_20k', "The plumber that called Joy drove a grey truck. Therefore, [MASK] [MASK] drove a grey truck.",
     #                 "plumber", "John", 2)
-    print(get_pythia_scores("EleutherAI/pythia-70m-deduped","step100000", "Once upon a time in a","castle", "far" ))
+    print(get_pythia_scores("EleutherAI/pythia-70m-deduped","step100000", "Once upon a time in a","teacher", "teachernet" ))
     # print(get_pythia_scores("EleutherAI/pythia-70m-deduped", "step3000", "Jfsdsff ", "model", "robot"))
