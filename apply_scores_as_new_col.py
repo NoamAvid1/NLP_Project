@@ -54,7 +54,7 @@ def get_df_pythia_scores(model_name, model_revision, row):
     # taking the first different token
     i = 0
     correct_word_token = tokenizer.encode(correct_word)[i]
-    false_word_token = tokenizer.encode(correct_word)[i]
+    false_word_token = tokenizer.encode(row['false_answer'])[i]
     while correct_word_token == false_word_token:
         i += 1
         if len(tokenizer.encode(correct_word)) - 1 < i or len(tokenizer.encode(row['false_answer'])) - 1 < i:
