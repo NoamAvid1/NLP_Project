@@ -1,13 +1,13 @@
 {
   "bert": {
-    "models": ["google/multiberts-seed_0"],
-    "checkpoints": ["step_40k", "step_1500k"]
+    "models": ["google/multiberts-seed_0", "google/multiberts-seed_3"],
+    "checkpoints": ["step_40k", "step_80k", "step_120k", "step_200k", "step_300k", "step_500k",
+      "step_800k", "step_1200k", "step_1600k", "step_2000k"]
   },
   "pythia": {
-    "models": ["EleutherAI/pythia-70m","EleutherAI/pythia-410m"],
-    "checkpoints": [
-      "step1000",
-      "step143000"
+    "models": ["EleutherAI/pythia-70m", "EleutherAI/pythia-410m", "EleutherAI/pythia-2.8b", "EleutherAI/pythia-12b"],
+    "checkpoints": ["step1000", "step2000", "step4000", "step10000", "step20000", "step40000",
+      "step60000", "step80000", "step110000", "step143000"
     ]
   }
 }

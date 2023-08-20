@@ -44,20 +44,22 @@ def get_df_pythia_scores(model_name, model_revision, row):
         revision=model_revision,
         # cache_dir=f"./{model_name}/{model_revision}",
     )
-    inputs = tokenizer(row['pythia_question'], return_tensors="pt")
+    inputs = tokenizer(row['model_question'], return_tensors="pt")
     scores = model(**inputs).logits[0][-1]
     probs = scores.softmax(dim=0)
+    if row["num_of_masks"] == 2:
+        correct_word = "the"
+    else:
+        correct_word = row['correct_answer']
     # taking the first different token
     i = 0
-    correct_word_token = tokenizer.encode(row['correct_answer'])[i]
-    false_word_token = tokenizer.encode(row['false_answer'])[i]
-    print(tokenizer.decode(correct_word_token), tokenizer.decode(false_word_token))
+    correct_word_token = tokenizer.encode(correct_word)[i]
+    false_word_token = tokenizer.encode(correct_word)[i]
     while correct_word_token == false_word_token:
-        print(correct_word_token, false_word_token)
         i += 1
-        if len(tokenizer.encode(row['correct_answer'])) - 1 < i or len(tokenizer.encode(row['false_answer'])) - 1 < i:
+        if len(tokenizer.encode(correct_word)) - 1 < i or len(tokenizer.encode(row['false_answer'])) - 1 < i:
             return pd.NA, pd.NA
-        correct_word_token = tokenizer.encode(row['correct_answer'])[i]
+        correct_word_token = tokenizer.encode(correct_word)[i]
         false_word_token = tokenizer.encode(row['false_answer'])[i]
 
     false_word_score = probs[false_word_token].item()
