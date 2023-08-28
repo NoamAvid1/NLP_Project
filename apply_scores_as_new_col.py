@@ -1,20 +1,30 @@
-import pandas
-from transformers import BertTokenizer, BertModel
 from transformers import GPTNeoXForCausalLM, AutoTokenizer
 from transformers import pipeline
-import torch
 import pandas as pd
 import json
+from tqdm import tqdm
+import os
 
 
-def get_correct_and_false_tokens(filled, row):
+def get_correct_and_false_tokens(targets_scores, row):
     if row['num_of_masks'] == 1:
-        correct_tokens = [i for i in filled if i['token_str'] == row['correct_answer']]
-        false_tokens = [i for i in filled if i['token_str'] == row['false_answer']]
+        false_tokens = [i for i in targets_scores if i['token_str'] == row['false_answer'].lower()]
+        correct_mask_1_tokens = [i for i in targets_scores if i['token_str'] == row['correct_answer'].lower()]
+        correct_mask_2_tokens = None
+
     else:
-        correct_tokens = [i for i in filled[1] if i['token_str'] == row['correct_answer']]
-        false_tokens = [i for i in filled[0] if i['token_str'] == row['false_answer']]
-    return correct_tokens, false_tokens
+        false_tokens = [i for i in targets_scores[0] if i['token_str'] == row['false_answer'].lower()]
+        correct_mask_1_tokens = [i for i in targets_scores[0] if i['token_str'] == "the"]
+        correct_mask_2_tokens = [i for i in targets_scores[1] if i['token_str'] == row['correct_answer'].lower()]
+    return false_tokens, correct_mask_1_tokens, correct_mask_2_tokens
+
+
+def get_bert_question(row: pd.Series):
+    bert_question = row['model_question'] + "[MASK]"
+    if row['num_of_masks'] == 2:
+        bert_question += " [MASK]"
+    return bert_question
+
 
 def get_df_bert_scores(model_name, model_revision, row):
     """
@@ -22,15 +32,24 @@ def get_df_bert_scores(model_name, model_revision, row):
     :param text: masked sentence that we want to test
     :return: scores of the correct masked word and the false word, as floats
     """
+    bert_question = get_bert_question(row)
     unmasker = pipeline('fill-mask', model=f"{model_name}-{model_revision}", tokenizer=f"{model_name}-{model_revision}")
-    filled = unmasker(row['bert_question'], targets=[row['correct_answer'], row['false_answer']])
-    # check that the correct and false words are in the dicitionary
-    correct_tokens, false_tokens = get_correct_and_false_tokens(filled, row)
+    if row['num_of_masks'] == 1:
+        targets_scores = unmasker(bert_question, targets=[row['false_answer'], row['correct_answer']])
+    else:
+        targets_scores = unmasker(bert_question,
+                                  targets=[row['false_answer'].lower(), "the", row['correct_answer'].lower()])
+    false_tokens, correct_tokens, correct_tokens2 = get_correct_and_false_tokens(targets_scores, row)
+    # check that the correct and false words are in the model vocabulary:
     if len(correct_tokens) == 0 or len(false_tokens) == 0:
-        return pd.NA, pd.NA
-    correct_word_score = correct_tokens[0]['score']
+        return pd.NA, pd.NA, pd.NA
+    if type(correct_tokens2) == list and len(correct_tokens2) == 0:
+        return pd.NA, pd.NA, pd.NA
     false_word_score = false_tokens[0]['score']
-    return correct_word_score, false_word_score
+    correct_mask_1_score = correct_tokens[0]['score']
+    correct_mask_2_score = correct_tokens2[0]['score'] if row['num_of_masks'] == 2 else pd.NA
+    # print(f"done with input")
+    return false_word_score, correct_mask_1_score, correct_mask_2_score
 
 
 def get_df_pythia_scores(model_name, model_revision, row):
@@ -64,36 +83,46 @@ def get_df_pythia_scores(model_name, model_revision, row):
 
     false_word_score = probs[false_word_token].item()
     correct_word_score = probs[correct_word_token].item()
-    return correct_word_score, false_word_score
+    return false_word_score, correct_word_score
 
 
 def run_model_and_save(model_type, models_config, df):
     """
     :param model_type: Bert or Pythia
+    :param: models_config: dictionary of all model version that we want to run
+    :param: df: dataframe of preprocessed experiment data
     :return:
     """
-    for model in models_config[model_type]['models']:
-        for checkpoint in models_config[model_type]['checkpoints']:
+    tqdm.pandas()
+    for model in models_config["model_types"][model_type]['models']:
+        for checkpoint in models_config["model_types"][model_type]['checkpoints']:
+            print(f"running model {model} with checkpoint {checkpoint}")
             model_df = df.copy()
             if model_type == "bert":
-                model_df[['correct_answer_score', 'false_answer_score']] = model_df.apply(
+                model_df[['false_answer_score', 'correct_mask_1_score', 'correct_mask_2_score']] = \
+                    model_df.progress_apply(
                     lambda row: get_df_bert_scores(model, checkpoint, row), axis=1, result_type='expand')
             else:
-                model_df[['correct_answer_score', 'false_answer_score']] = model_df.apply(
+                model_df[['false_answer_score', 'correct_mask_1_score']] = \
+                    model_df.progress_apply(
                     lambda row: get_df_pythia_scores(model, checkpoint, row), axis=1, result_type='expand')
-            file_name = f'experiment_results/output_{model.replace("/", "_")}_{checkpoint}.csv'
-            model_df.to_csv(file_name, index=False)
-            print(f"saved result to {file_name}")
+            results_dir = os.path.join("experiment_results", models_config["run_name"])
+            if not os.path.isdir(results_dir):
+                os.makedirs(results_dir, exist_ok=True)
+            output_filename = f'{results_dir}/{model.replace("/", "_")}_{checkpoint}.csv'
+            model_df.to_csv(output_filename, index=False)
+            print(f"saved result to {output_filename}")
 
 
 if __name__ == '__main__':
-    #df = pd.read_csv('experiment_sentences_preprocessed_15.8.csv')
-    df = pd.read_excel("demo.xlsx")
-    df = df[df["num_of_masks"] == 1]
-    models_config = {}
-    with open("models_configs/all_run.json") as f:
+    df = pd.read_csv('preprocessed_data/experiment_sentences_preprocessed - All merged.csv')
+    df = df.iloc[:20,]
+    # df = pd.read_excel("demo with model question.xlsx")
+    # df = df[df["num_of_masks"] == 1]
+    models_config = {"model_types": []}
+    with open("models_configs/bert_validation.json") as f:
             models_config = json.load(f)
-    for model_type in models_config.keys():
+    for model_type in models_config["model_types"].keys():
         run_model_and_save(model_type, models_config, df)
 
 #     "models": ["EleutherAI/pythia-70m","EleutherAI/pythia-410m", "EleutherAI/pythia-2.8b", "EleutherAI/pythia-12b"],
