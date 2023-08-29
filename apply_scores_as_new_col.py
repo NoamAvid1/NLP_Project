@@ -1,4 +1,5 @@
-from transformers import GPTNeoXForCausalLM, AutoTokenizer
+import torch
+from transformers import GPTNeoXForCausalLM, AutoTokenizer, AutoModelForMaskedLM
 from transformers import pipeline
 import pandas as pd
 import json
@@ -33,7 +34,13 @@ def get_df_bert_scores(model_name, model_revision, row):
     :return: scores of the correct masked word and the false word, as floats
     """
     bert_question = get_bert_question(row)
-    unmasker = pipeline('fill-mask', model=f"{model_name}-{model_revision}", tokenizer=f"{model_name}-{model_revision}")
+    model = AutoModelForMaskedLM.from_pretrained(f"{model_name}-{model_revision}")
+    tokenizer = AutoTokenizer.from_pretrained(f"{model_name}-{model_revision}")
+
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model = model.to(device)
+
+    unmasker = pipeline('fill-mask', model=model, tokenizer=tokenizer)
     if row['num_of_masks'] == 1:
         targets_scores = unmasker(bert_question, targets=[row['false_answer'], row['correct_answer']])
     else:
@@ -48,7 +55,6 @@ def get_df_bert_scores(model_name, model_revision, row):
     false_word_score = false_tokens[0]['score']
     correct_mask_1_score = correct_tokens[0]['score']
     correct_mask_2_score = correct_tokens2[0]['score'] if row['num_of_masks'] == 2 else pd.NA
-    # print(f"done with input")
     return false_word_score, correct_mask_1_score, correct_mask_2_score
 
 
@@ -63,6 +69,9 @@ def get_df_pythia_scores(model_name, model_revision, row):
         revision=model_revision,
         cache_dir=f"cache/{model_name}/{model_revision}"
     )
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model = model.to(device)
+
     inputs = tokenizer(row['model_question'], return_tensors="pt")
     scores = model(**inputs).logits[0][-1]
     probs = scores.softmax(dim=0)
