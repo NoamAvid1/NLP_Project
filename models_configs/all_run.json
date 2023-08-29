@@ -1,5 +1,5 @@
 {
-  "run_name": "bert_validation",
+  "run_name": "all_run",
   "model_types":{
     "bert": {
     "models": ["google/multiberts-seed_0", "google/multiberts-seed_3"],

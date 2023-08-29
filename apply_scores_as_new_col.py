@@ -56,12 +56,12 @@ def get_df_pythia_scores(model_name, model_revision, row):
     model = GPTNeoXForCausalLM.from_pretrained(
         model_name,
         revision=model_revision,
-        # cache_dir=f"./{model_name}/{model_revision}",
+        cache_dir=f"cache/{model_name}/{model_revision}"
     )
     tokenizer = AutoTokenizer.from_pretrained(
         model_name,
         revision=model_revision,
-        # cache_dir=f"./{model_name}/{model_revision}",
+        cache_dir=f"cache/{model_name}/{model_revision}"
     )
     inputs = tokenizer(row['model_question'], return_tensors="pt")
     scores = model(**inputs).logits[0][-1]
@@ -99,6 +99,7 @@ def run_model_and_save(model_type, models_config, df):
             print(f"running model {model} with checkpoint {checkpoint}")
             model_df = df.copy()
             if model_type == "bert":
+                os.environ['TRANSFORMERS_CACHE'] = 'cache/bert'
                 model_df[['false_answer_score', 'correct_mask_1_score', 'correct_mask_2_score']] = \
                     model_df.progress_apply(
                     lambda row: get_df_bert_scores(model, checkpoint, row), axis=1, result_type='expand')
@@ -116,13 +117,8 @@ def run_model_and_save(model_type, models_config, df):
 
 if __name__ == '__main__':
     df = pd.read_csv('preprocessed_data/experiment_sentences_preprocessed - All merged.csv')
-    df = df.iloc[:20,]
-    # df = pd.read_excel("demo with model question.xlsx")
-    # df = df[df["num_of_masks"] == 1]
     models_config = {"model_types": []}
-    with open("models_configs/bert_validation.json") as f:
+    with open("models_configs/all_run.json") as f:
             models_config = json.load(f)
     for model_type in models_config["model_types"].keys():
         run_model_and_save(model_type, models_config, df)
-
-#     "models": ["EleutherAI/pythia-70m","EleutherAI/pythia-410m", "EleutherAI/pythia-2.8b", "EleutherAI/pythia-12b"],
