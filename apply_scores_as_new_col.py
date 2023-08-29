@@ -40,7 +40,7 @@ def get_df_bert_scores(model_name, model_revision, row):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = model.to(device)
 
-    unmasker = pipeline('fill-mask', model=model, tokenizer=tokenizer)
+    unmasker = pipeline('fill-mask', model=model, tokenizer=tokenizer, device = device)
     if row['num_of_masks'] == 1:
         targets_scores = unmasker(bert_question, targets=[row['false_answer'], row['correct_answer']])
     else:
@@ -73,6 +73,7 @@ def get_df_pythia_scores(model_name, model_revision, row):
     model = model.to(device)
 
     inputs = tokenizer(row['model_question'], return_tensors="pt")
+    inputs = inputs.to(device)
     scores = model(**inputs).logits[0][-1]
     probs = scores.softmax(dim=0)
     if row["num_of_masks"] == 2:
