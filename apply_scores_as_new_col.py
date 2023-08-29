@@ -34,8 +34,8 @@ def get_df_bert_scores(model_name, model_revision, row):
     :return: scores of the correct masked word and the false word, as floats
     """
     bert_question = get_bert_question(row)
-    model = AutoModelForMaskedLM.from_pretrained(f"{model_name}-{model_revision}")
-    tokenizer = AutoTokenizer.from_pretrained(f"{model_name}-{model_revision}")
+    model = AutoModelForMaskedLM.from_pretrained(f"{model_name}-{model_revision}", cache_dir=f"cache/{model_name}/{model_revision}")
+    tokenizer = AutoTokenizer.from_pretrained(f"{model_name}-{model_revision}", cache_dir=f"cache/{model_name}/{model_revision}")
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = model.to(device)
@@ -108,7 +108,6 @@ def run_model_and_save(model_type, models_config, df):
             print(f"running model {model} with checkpoint {checkpoint}")
             model_df = df.copy()
             if model_type == "bert":
-                os.environ['TRANSFORMERS_CACHE'] = 'cache/bert'
                 model_df[['false_answer_score', 'correct_mask_1_score', 'correct_mask_2_score']] = \
                     model_df.progress_apply(
                     lambda row: get_df_bert_scores(model, checkpoint, row), axis=1, result_type='expand')
@@ -127,6 +126,8 @@ def run_model_and_save(model_type, models_config, df):
 if __name__ == '__main__':
     df = pd.read_csv('preprocessed_data/experiment_sentences_preprocessed - All merged.csv')
     models_config = {"model_types": []}
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(f"using {device} as device")
     with open("models_configs/all_run.json") as f:
             models_config = json.load(f)
     for model_type in models_config["model_types"].keys():
