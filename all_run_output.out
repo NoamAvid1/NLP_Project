@@ -1,0 +1,86 @@
+using cuda as device
+running model google/multiberts-seed_0 with checkpoint step_40k
+saved result to experiment_results/all_run/google_multiberts-seed_0_step_40k.csv
+running model google/multiberts-seed_0 with checkpoint step_80k
+saved result to experiment_results/all_run/google_multiberts-seed_0_step_80k.csv
+running model google/multiberts-seed_0 with checkpoint step_120k
+saved result to experiment_results/all_run/google_multiberts-seed_0_step_120k.csv
+running model google/multiberts-seed_0 with checkpoint step_200k
+saved result to experiment_results/all_run/google_multiberts-seed_0_step_200k.csv
+running model google/multiberts-seed_0 with checkpoint step_300k
+saved result to experiment_results/all_run/google_multiberts-seed_0_step_300k.csv
+running model google/multiberts-seed_0 with checkpoint step_500k
+saved result to experiment_results/all_run/google_multiberts-seed_0_step_500k.csv
+running model google/multiberts-seed_0 with checkpoint step_800k
+saved result to experiment_results/all_run/google_multiberts-seed_0_step_800k.csv
+running model google/multiberts-seed_0 with checkpoint step_1200k
+saved result to experiment_results/all_run/google_multiberts-seed_0_step_1200k.csv
+running model google/multiberts-seed_0 with checkpoint step_1600k
+saved result to experiment_results/all_run/google_multiberts-seed_0_step_1600k.csv
+running model google/multiberts-seed_0 with checkpoint step_2000k
+saved result to experiment_results/all_run/google_multiberts-seed_0_step_2000k.csv
+running model google/multiberts-seed_3 with checkpoint step_40k
+saved result to experiment_results/all_run/google_multiberts-seed_3_step_40k.csv
+running model google/multiberts-seed_3 with checkpoint step_80k
+saved result to experiment_results/all_run/google_multiberts-seed_3_step_80k.csv
+running model google/multiberts-seed_3 with checkpoint step_120k
+saved result to experiment_results/all_run/google_multiberts-seed_3_step_120k.csv
+running model google/multiberts-seed_3 with checkpoint step_200k
+saved result to experiment_results/all_run/google_multiberts-seed_3_step_200k.csv
+running model google/multiberts-seed_3 with checkpoint step_300k
+saved result to experiment_results/all_run/google_multiberts-seed_3_step_300k.csv
+running model google/multiberts-seed_3 with checkpoint step_500k
+saved result to experiment_results/all_run/google_multiberts-seed_3_step_500k.csv
+running model google/multiberts-seed_3 with checkpoint step_800k
+saved result to experiment_results/all_run/google_multiberts-seed_3_step_800k.csv
+running model google/multiberts-seed_3 with checkpoint step_1200k
+saved result to experiment_results/all_run/google_multiberts-seed_3_step_1200k.csv
+running model google/multiberts-seed_3 with checkpoint step_1600k
+saved result to experiment_results/all_run/google_multiberts-seed_3_step_1600k.csv
+running model google/multiberts-seed_3 with checkpoint step_2000k
+saved result to experiment_results/all_run/google_multiberts-seed_3_step_2000k.csv
+running model EleutherAI/pythia-70m with checkpoint step1000
+saved result to experiment_results/all_run/EleutherAI_pythia-70m_step1000.csv
+running model EleutherAI/pythia-70m with checkpoint step2000
+saved result to experiment_results/all_run/EleutherAI_pythia-70m_step2000.csv
+running model EleutherAI/pythia-70m with checkpoint step4000
+saved result to experiment_results/all_run/EleutherAI_pythia-70m_step4000.csv
+running model EleutherAI/pythia-70m with checkpoint step10000
+saved result to experiment_results/all_run/EleutherAI_pythia-70m_step10000.csv
+running model EleutherAI/pythia-70m with checkpoint step20000
+saved result to experiment_results/all_run/EleutherAI_pythia-70m_step20000.csv
+running model EleutherAI/pythia-70m with checkpoint step40000
+saved result to experiment_results/all_run/EleutherAI_pythia-70m_step40000.csv
+running model EleutherAI/pythia-70m with checkpoint step60000
+saved result to experiment_results/all_run/EleutherAI_pythia-70m_step60000.csv
+running model EleutherAI/pythia-70m with checkpoint step80000
+saved result to experiment_results/all_run/EleutherAI_pythia-70m_step80000.csv
+running model EleutherAI/pythia-70m with checkpoint step110000
+saved result to experiment_results/all_run/EleutherAI_pythia-70m_step110000.csv
+running model EleutherAI/pythia-70m with checkpoint step143000
+saved result to experiment_results/all_run/EleutherAI_pythia-70m_step143000.csv
+running model EleutherAI/pythia-410m with checkpoint step1000
+saved result to experiment_results/all_run/EleutherAI_pythia-410m_step1000.csv
+running model EleutherAI/pythia-410m with checkpoint step2000
+saved result to experiment_results/all_run/EleutherAI_pythia-410m_step2000.csv
+running model EleutherAI/pythia-410m with checkpoint step4000
+saved result to experiment_results/all_run/EleutherAI_pythia-410m_step4000.csv
+running model EleutherAI/pythia-410m with checkpoint step10000
+saved result to experiment_results/all_run/EleutherAI_pythia-410m_step10000.csv
+running model EleutherAI/pythia-410m with checkpoint step20000
+saved result to experiment_results/all_run/EleutherAI_pythia-410m_step20000.csv
+running model EleutherAI/pythia-410m with checkpoint step40000
+saved result to experiment_results/all_run/EleutherAI_pythia-410m_step40000.csv
+running model EleutherAI/pythia-410m with checkpoint step60000
+saved result to experiment_results/all_run/EleutherAI_pythia-410m_step60000.csv
+running model EleutherAI/pythia-410m with checkpoint step80000
+saved result to experiment_results/all_run/EleutherAI_pythia-410m_step80000.csv
+running model EleutherAI/pythia-410m with checkpoint step110000
+saved result to experiment_results/all_run/EleutherAI_pythia-410m_step110000.csv
+running model EleutherAI/pythia-410m with checkpoint step143000
+saved result to experiment_results/all_run/EleutherAI_pythia-410m_step143000.csv
+running model EleutherAI/pythia-2.8b with checkpoint step1000
+saved result to experiment_results/all_run/EleutherAI_pythia-2.8b_step1000.csv
+running model EleutherAI/pythia-2.8b with checkpoint step2000
+saved result to experiment_results/all_run/EleutherAI_pythia-2.8b_step2000.csv
+running model EleutherAI/pythia-2.8b with checkpoint step4000
