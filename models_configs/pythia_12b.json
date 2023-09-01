@@ -1,0 +1,11 @@
+{
+  "run_name": "all_run",
+  "model_types":{
+  "pythia": {
+    "models": ["EleutherAI/pythia-12b"],
+    "checkpoints": ["step1000", "step2000", "step4000", "step10000", "step20000", "step40000",
+      "step60000", "step80000", "step110000", "step143000"
+    ]
+  }
+  }
+}
