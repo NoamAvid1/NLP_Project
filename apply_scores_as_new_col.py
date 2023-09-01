@@ -5,7 +5,7 @@ import pandas as pd
 import json
 from tqdm import tqdm
 import os
-
+import argparse
 
 def get_correct_and_false_tokens(targets_scores, row):
     if row['num_of_masks'] == 1:
@@ -123,13 +123,21 @@ def run_model_and_save(model_type, models_config, df):
             model_df.to_csv(output_filename, index=False)
             print(f"saved result to {output_filename}")
 
+def parse_conf_file():
+    parser.add_argument('--conf_file', type=str, help='model configuration file')
+    args = parser.parse_args()
+    return args.conf_file
+
+
 
 if __name__ == '__main__':
     df = pd.read_csv('preprocessed_data/experiment_sentences_preprocessed - All merged.csv')
+    parser = argparse.ArgumentParser()
+    model_config_file = os.path.join('models_configs',parse_conf_file())
     models_config = {"model_types": []}
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"using {device} as device")
-    with open("models_configs/all_run.json") as f:
+    with open(model_config_file) as f:
             models_config = json.load(f)
     for model_type in models_config["model_types"].keys():
         run_model_and_save(model_type, models_config, df)
