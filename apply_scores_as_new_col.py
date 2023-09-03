@@ -7,6 +7,44 @@ from tqdm import tqdm
 import os
 import argparse
 
+
+def load_pythia_model_tokenizer(model_name: str, model_revision: str, num_gpus: int = 4, max_gpu_mem: str | None = None):
+    """Load a model from Hugging Face."""
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    if device == "cpu":
+        kwargs = {"torch_dtype": torch.float32}
+    elif device == "cuda":
+        kwargs = {"torch_dtype": torch.float16}
+        if num_gpus != 1:
+            kwargs["device_map"] = "auto"
+            if max_gpu_mem is None:
+                kwargs["device_map"] = "sequential"  # This is important for not the same VRAM sizes
+                available_gpu_memory = [11 for i in range(num_gpus)]
+                kwargs["max_memory"] = {i: str(int(available_gpu_memory[i] * 0.85)) + "GiB" for i in range(num_gpus)}
+            else:
+                kwargs["max_memory"] = {i: max_gpu_mem for i in range(num_gpus)}
+    else:
+        raise ValueError(f"Invalid device: {device}")
+
+    # Load model
+    model = GPTNeoXForCausalLM.from_pretrained(
+        model_name,
+        revision=model_revision,
+        cache_dir=f"cache/{model_name}/{model_revision}",
+        **kwargs
+    )
+    tokenizer = AutoTokenizer.from_pretrained(
+        model_name,
+        revision=model_revision,
+        cache_dir=f"cache/{model_name}/{model_revision}",
+        **kwargs
+    )
+
+    if (device == "cuda" and num_gpus == 1):
+        model.to(device)
+
+    return model, tokenizer
+
 def get_correct_and_false_tokens(targets_scores, row):
     if row['num_of_masks'] == 1:
         false_tokens = [i for i in targets_scores if i['token_str'] == row['false_answer'].lower()]
