@@ -97,21 +97,12 @@ def get_df_bert_scores(model_name, model_revision, row):
 
 
 def get_df_pythia_scores(model_name, model_revision, row):
-    model = GPTNeoXForCausalLM.from_pretrained(
-        model_name,
-        revision=model_revision,
-        cache_dir=f"cache/{model_name}/{model_revision}"
-    )
-    tokenizer = AutoTokenizer.from_pretrained(
-        model_name,
-        revision=model_revision,
-        cache_dir=f"cache/{model_name}/{model_revision}"
-    )
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = model.to(device)
+    model, tokenizer = load_pythia_model_tokenizer(model_name, model_revision)
+
+    # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     inputs = tokenizer(row['model_question'], return_tensors="pt")
-    inputs = inputs.to(device)
+    # inputs = inputs.to(device)
     scores = model(**inputs).logits[0][-1]
     probs = scores.softmax(dim=0)
     if row["num_of_masks"] == 2:
