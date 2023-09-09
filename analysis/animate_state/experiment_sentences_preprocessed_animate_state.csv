@@ -168,9 +168,9 @@ The gift that was in the elderly grandmother's house this morning made the curly
 This is the nanny who this morning at the elderly grandmother's house saddened her curly granddaughter.,nanny,grandmother,both_animate,
 This is the gift who this morning at the elderly grandmother's house saddened her curly granddaughter.,gift,grandmother,false_animate,
 The fan who was in the English singer's room this morning made the band members happy.,fan,singer,both_animate,correct can be also inanimate
-The picture that was in the English singer's room this morning made the members of the band happy.,fan,singer,false_animate,
+The picture that was in the English singer's room this morning made the members of the band happy.,picture,singer,false_animate,
 This is the fan who this morning in the room of the English singer made the members of the band happy.,fan,singer,both_animate,correct can be also inanimate
-This is the picture that this morning in the room of the English singer made the members of the band happy.,fan,singer,false_animate,
+This is the picture that this morning in the room of the English singer made the members of the band happy.,picture,singer,false_animate,
 The nurse who was at the examination of the successful surgeon today reassured the worried patient.,nurse,surgeon,both_animate,
 The result of today's examination by the successful surgeon reassured the worried patient.,result,surgeon,false_animate,
 This is the nurse who today during the examination of the successful surgeon calmed down the worried patient.,nurse,surgeon,both_animate,

@@ -60,7 +60,7 @@ def plot_multiple_bert_average_acc():
     )
 
 def plot_pythia_average_acc():
-    df_path = "../results_analysis/all_analysis.csv"
+    df_path = "../analysis/all_analysis.csv"
     df = pd.read_csv(df_path)
     df['model_step_int'] = df['model_step'].apply(lambda x: int(x[5:-1]))
     df_seed0 = df[df["model_name"] == "google_multiberts-seed_0"]  # filter only bert models seed 0

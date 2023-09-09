@@ -43,4 +43,4 @@ if __name__ == '__main__':
         model_values.update(accuracy_values)
 
         new_df = pd.concat([new_df,pd.DataFrame([model_values])],ignore_index=True)
-    new_df.to_csv('results_analysis/all_analysis.csv', index=False)
+    new_df.to_csv('analysis/all_analysis.csv', index=False)
