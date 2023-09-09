@@ -24,9 +24,17 @@ def get_accuracy(df):
          accuracy_mask_2 = df['is_greater_mask_2'][df['correct_mask_2_score'].notna()].mean()
     return {'accuracy_mask1': accuracy_mask_1, 'accuracy_mask2': accuracy_mask_2}
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--res_dir",type= str, help= 'directory of result files' )
+    parser.add_argument("--out",type= str, help= 'file path to save output analysis')
+    return parser.parse_args()   
+
 
 if __name__ == '__main__':
-    dir = r'run_results\all_run'
+    args = parse_args()
+    parser = argparse.ArgumentParser()
+    dir = args.res_dir
     files = os.listdir(dir)
     new_df = pd.DataFrame(columns=['model_name', 'model_step','false_mask1_avg', 'correct_mask1_avg', 'false_mask2_avg', 'correct_mask2_avg', 'accuracy_mask1', 'accuracy_mask2'])
     for file in files: 
@@ -43,4 +51,4 @@ if __name__ == '__main__':
         model_values.update(accuracy_values)
 
         new_df = pd.concat([new_df,pd.DataFrame([model_values])],ignore_index=True)
-    new_df.to_csv('analysis/all_analysis.csv', index=False)
+    new_df.to_csv(args.out, index=False)
