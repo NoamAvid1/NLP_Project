@@ -1,0 +1,17 @@
+{
+  "run_name": "bert_validation",
+  "model_types": {
+    "bert": {
+      "models": [
+        "google/multiberts-seed_0"
+      ],
+      "checkpoints": [
+        "step_2000k"
+      ]
+    },
+    "pythia": {
+      "models": [],
+      "checkpoints": []
+    }
+  }
+}

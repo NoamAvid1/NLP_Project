@@ -12,7 +12,7 @@ def remove_duplications_in_list(lst):
 
 
 if __name__ == '__main__':
-    dir = 'data_exp'
+    dir = '../data_exp'
     sub_dirs = [sub_dir for sub_dir in os.listdir(dir) if os.path.isdir(os.path.join(dir, sub_dir))]
     sentences = []
     for sub_dir in sub_dirs:
