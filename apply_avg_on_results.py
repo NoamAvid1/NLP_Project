@@ -7,11 +7,12 @@ def apply_average(df,cols):
     false_avg = df[cols[0]].mean()
     correct_mask_1_avg = df[cols[1]].mean()
     df.loc[len(df),cols[0]] = false_avg
-    df.loc[len(df[cols[1]]),cols[1]] = correct_mask_1_avg
+    df.loc[len(df)-1,cols[1]] = correct_mask_1_avg
     if len(cols) > 2:
         false_avg_mask_2_avg = df[cols[0][:-1]][df[cols[2]].notna()].mean()
         correct_mask_2_avg = df[cols[2]][df[cols[2]].notna()].mean()
-        df = pd.concat([df,{cols[0]:false_avg_mask_2_avg, cols[2]: correct_mask_2_avg}])
+        df.loc[len(df),cols[0]] = false_avg_mask_2_avg
+        df.loc[len(df)-1,cols[2]] = correct_mask_2_avg
     return df
 
 
