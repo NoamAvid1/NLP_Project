@@ -1,0 +1,41 @@
+Typo:
+The specified target token `You` does not exist in the model vocabulary. Replacing with `you`.
+The specified target token `You` does not exist in the model vocabulary. Replacing with `you`.
+The specified target token `megician` does not exist in the model vocabulary. Replacing with `meg`.
+The specified target token `You` does not exist in the model vocabulary. Replacing with `you`.
+The specified target token `megician` does not exist in the model vocabulary. Replacing with `meg`.
+The specified target token `You` does not exist in the model vocabulary. Replacing with `you`.
+The specified target token `You` does not exist in the model vocabulary. Replacing with `you`.
+The specified target token `You` does not exist in the model vocabulary. Replacing with `you`.
+The specified target token ` suspects` does not exist in the model vocabulary. Replacing with `suspects`.
+
+Plurals:
+The specified target token `choreographers` does not exist in the model vocabulary. Replacing with `choreographer`.
+The specified target token `pianists` does not exist in the model vocabulary. Replacing with `pianist`.
+The specified target token `interpreters` does not exist in the model vocabulary. Replacing with `interpreter`.
+The specified target token `princesses` does not exist in the model vocabulary. Replacing with `princess`.
+The specified target token `sergeants` does not exist in the model vocabulary. Replacing with `sergeant`.
+The specified target token `waitresses` does not exist in the model vocabulary. Replacing with `waitress`.
+The specified target token `brokers` does not exist in the model vocabulary. Replacing with `broker`.
+The specified target token `gymnasts` does not exist in the model vocabulary. Replacing with `gymnast`.
+The specified target token `wardens` does not exist in the model vocabulary. Replacing with `warden`.
+
+Unrecognized:
+The specified target token `diagnostician` does not exist in the model vocabulary. Replacing with `diagnostic`.
+The specified target token `diagnosticians` does not exist in the model vocabulary. Replacing with `diagnostic`.
+The specified target token `plumber` does not exist in the model vocabulary. Replacing with `plum`.
+The specified target token `saleswoman` does not exist in the model vocabulary. Replacing with `sales`.
+The specified target token `souvenir` does not exist in the model vocabulary. Replacing with `so`.
+The specified target token `loudspeaker` does not exist in the model vocabulary. Replacing with `loud`.
+The specified target token `brochure` does not exist in the model vocabulary. Replacing with `bro`.
+The specified target token `joutnalist` does not exist in the model vocabulary. Replacing with `jo`.
+The specified target token `smugglers` does not exist in the model vocabulary. Replacing with `smug`.
+The specified target token `cashiers` does not exist in the model vocabulary. Replacing with `cash`.
+The specified target token `fireman` does not exist in the model vocabulary. Replacing with `fire`.
+The specified target token `mailman` does not exist in the model vocabulary. Replacing with `mail`.
+The specified target token `cashier` does not exist in the model vocabulary. Replacing with `cash`.
+The specified target token `electrician` does not exist in the model vocabulary. Replacing with `electric`.
+The specified target token `homeowner` does not exist in the model vocabulary. Replacing with `home`.
+The specified target token `kindergartener` does not exist in the model vocabulary. Replacing with `kindergarten`.
+The specified target token `medic` does not exist in the model vocabulary. Replacing with `med`.
+The specified target token `medics` does not exist in the model vocabulary. Replacing with `med`.
