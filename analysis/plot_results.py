@@ -119,15 +119,113 @@ def plot_animate_results():
             results_filename=rf"analysis\animate_state\animated_graphs\{model}_{name}.png"
             )
 
+def plot_pythia_false_scores_avg():
+    df_path = "../analysis/all_analysis.csv"
+    df = pd.read_csv(df_path)
+    models= ["EleutherAI/pythia-70m", "EleutherAI/pythia-410m", "EleutherAI/pythia-2.8b"]
+    xcol, xticks, ycols = get_plot_values(df, models, col_name="false_mask1_avg")
+    plot_results(
+        title="Pythia - False Scores Average Over Steps",
+        xlabel="Step",
+        ylabel="False Scores Average",
+        xaxis_col=xcol,
+        yaxis_cols=ycols,
+        xticks=xticks,
+        legend_names=models,
+        results_filename="accuracy_plots/pythia_false_scores_avg.png"
+    )
 
+def plot_pythia_correct_scores_avg():
+    df_path = "../analysis/all_analysis.csv"
+    df = pd.read_csv(df_path)
+    models= ["EleutherAI/pythia-70m", "EleutherAI/pythia-410m", "EleutherAI/pythia-2.8b"]
+    xcol, xticks, ycols = get_plot_values(df, models, col_name="correct_mask1_avg")
+    plot_results(
+        title="Pythia - Correct Scores Average Over Steps",
+        xlabel="Step",
+        ylabel="Correct Scores Average",
+        xaxis_col=xcol,
+        yaxis_cols=ycols,
+        xticks=xticks,
+        legend_names=models,
+        results_filename="accuracy_plots/pythia_correct_scores_avg.png"
+    )
 
+def plot_bert_mask_1_false_scores_avg():
+    df_path = "../analysis/all_analysis.csv"
+    df = pd.read_csv(df_path)
+    models = ["google/multiberts-seed_0", "google/multiberts-seed_3"]
+    xcol, xticks, ycols = get_plot_values(df, models, col_name="false_mask1_avg")
+    plot_results(
+        title="Bert - Mask 1 False Scores Average Over Steps",
+        xlabel="Step",
+        ylabel="Mask 1 False Scores Average",
+        xaxis_col=xcol,
+        yaxis_cols=ycols,
+        xticks=xticks,
+        legend_names=models,
+        results_filename="accuracy_plots/bert_mask_1_false_scores_avg.png"
+    )
 
+def plot_bert_mask_1_correct_scores_avg():
+    df_path = "../analysis/all_analysis.csv"
+    df = pd.read_csv(df_path)
+    models = ["google/multiberts-seed_0", "google/multiberts-seed_3"]
+    xcol, xticks, ycols = get_plot_values(df, models, col_name="correct_mask1_avg")
+    plot_results(
+        title="Bert - Mask 1 Correct Scores Average Over Steps",
+        xlabel="Step",
+        ylabel="Mask 1 Correct Scores Average",
+        xaxis_col=xcol,
+        yaxis_cols=ycols,
+        xticks=xticks,
+        legend_names=models,
+        results_filename="accuracy_plots/bert_mask_1_correct_scores_avg.png"
+    )
+
+def plot_bert_mask_2_false_scores_avg():
+    df_path = "../analysis/all_analysis.csv"
+    df = pd.read_csv(df_path)
+    models = ["google/multiberts-seed_0", "google/multiberts-seed_3"]
+    xcol, xticks, ycols = get_plot_values(df, models, col_name="false_mask2_avg")
+    plot_results(
+        title="Bert - Mask 2 False Scores Average Over Steps",
+        xlabel="Step",
+        ylabel="Mask 2 False Scores Average",
+        xaxis_col=xcol,
+        yaxis_cols=ycols,
+        xticks=xticks,
+        legend_names=models,
+        results_filename="accuracy_plots/bert_mask_2_false_scores_avg.png"
+    )
+
+def plot_bert_mask_2_correct_scores_avg():
+    df_path = "../analysis/all_analysis.csv"
+    df = pd.read_csv(df_path)
+    models = ["google/multiberts-seed_0", "google/multiberts-seed_3"]
+    xcol, xticks, ycols = get_plot_values(df, models, col_name="correct_mask2_avg")
+    plot_results(
+        title="Bert - Mask 2 Correct Scores Average Over Steps",
+        xlabel="Step",
+        ylabel="Mask 2 Correct Scores Average",
+        xaxis_col=xcol,
+        yaxis_cols=ycols,
+        xticks=xticks,
+        legend_names=models,
+        results_filename="accuracy_plots/bert_mask_2_correct_scores_avg.png"
+    )
 
 if __name__ == '__main__':
     # plot_bert_average_acc()
-    plot_multiple_bert_average_acc()
+    # plot_multiple_bert_average_acc()
     # plot_animate_results()
-    plot_pythia_average_acc()
+    # plot_pythia_average_acc()
+    # plot_pythia_false_scores_avg()
+    # plot_pythia_correct_scores_avg()
+    # plot_bert_mask_1_false_scores_avg()
+    # plot_bert_mask_1_correct_scores_avg()
+    # plot_bert_mask_2_false_scores_avg()
+    plot_bert_mask_2_correct_scores_avg()
     # plot_results(None, "my title", "x title", "y title", [3,4,10], [[4,5,7], [2,3,6], [1,1,1]], ["name1", "name2", "name3"], "trial3.png")
 
 
