@@ -6,23 +6,33 @@ import os
 def get_average(df,cols):
     false_avg = df[cols[0]].mean()
     correct_mask_1_avg = df[cols[1]].mean()
+    false_avg_1_num_mask = df[cols[0]][df['num_of_masks'] == 1].mean()
+    false_avg_2_num_mask = df[cols[0]][df['num_of_masks'] == 2].mean()
+    correct_avg_1_num_mask_first_mask = df[cols[1]][df['num_of_masks'] == 1].mean()
+    correct_avg_2_num_mask_first_mask = df[cols[1]][df['num_of_masks'] == 2].mean()
     if cols[2] in df.columns:
         false_avg_mask_2_avg = df[cols[0]][df[cols[2]].notna()].mean()
         correct_mask_2_avg = df[cols[2]][df[cols[2]].notna()].mean()
     else:
         false_avg_mask_2_avg = pd.NA
         correct_mask_2_avg = pd.NA
-    return {'false_mask1_avg': false_avg, 'correct_mask1_avg': correct_mask_1_avg, \
-            'false_mask2_avg': false_avg_mask_2_avg, 'correct_mask2_avg':correct_mask_2_avg }
+    return {'false_mask1_avg': false_avg, 'correct_mask1_avg': correct_mask_1_avg,
+            'false_mask2_avg': false_avg_mask_2_avg, 'correct_mask2_avg':correct_mask_2_avg,
+            'false_avg_1_num_mask': false_avg_1_num_mask, "false_avg_2_num_mask": false_avg_2_num_mask,
+            'correct_avg_1_num_mask_first_mask': correct_avg_1_num_mask_first_mask,
+            'correct_avg_2_num_mask_first_mask': correct_avg_2_num_mask_first_mask}
 
 def get_accuracy(df):
     df['is_greater_mask_1'] = df['correct_mask_1_score'] > df['false_answer_score']
     accuracy_mask_1 = df['is_greater_mask_1'].mean()
+    accuracy_1_num_mask = df['is_greater_mask_1'][df['num_of_masks'] == 1].mean()
+    accuracy_2_num_mask = df['is_greater_mask_1'][df['num_of_masks'] == 2].mean()
     accuracy_mask_2 = pd.NA
     if 'correct_mask_2_score' in df.columns:
          df['is_greater_mask_2'] =  df['correct_mask_2_score'] > df['false_answer_score']
          accuracy_mask_2 = df['is_greater_mask_2'][df['correct_mask_2_score'].notna()].mean()
-    return {'accuracy_mask1': accuracy_mask_1, 'accuracy_mask2': accuracy_mask_2}
+    return {'accuracy_mask1': accuracy_mask_1, 'accuracy_mask2': accuracy_mask_2,
+            'accuracy_1_num_mask': accuracy_1_num_mask, 'accuracy_2_num_mask': accuracy_2_num_mask}
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -36,7 +46,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     dir = args.res_dir
     files = os.listdir(dir)
-    new_df = pd.DataFrame(columns=['model_name', 'model_step','false_mask1_avg', 'correct_mask1_avg', 'false_mask2_avg', 'correct_mask2_avg', 'accuracy_mask1', 'accuracy_mask2'])
+    new_df = pd.DataFrame(columns=['model_name', 'model_step','false_mask1_avg', 'correct_mask1_avg',
+                                   'false_mask2_avg', 'correct_mask2_avg','false_avg_1_num_mask', "false_avg_2_num_mask",
+                                   "correct_avg_1_num_mask_first_mask", "correct_avg_2_num_mask_first_mask",
+                                   'accuracy_mask1', 'accuracy_mask2', "accuracy_1_num_mask", "accuracy_2_num_mask"])
     for file in files: 
         if file.startswith('google'):
             split_arg = 2

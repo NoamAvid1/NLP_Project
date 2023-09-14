@@ -68,6 +68,29 @@ def plot_multiple_bert_average_acc():
         results_filename="accuracy_plots/google_multiberts_accuracy_mask_2.png"
     )
 
+def plot_bert_average_acc_considering_num_of_masks():
+    df_path = "all_analysis_num_of_mask_vers.csv"
+    df = pd.read_csv(df_path)
+    models = ["google/multiberts-seed_0", "google/multiberts-seed_3"]
+    legend_names = ["google/multiberts-seed_0/1_num_of_masks", "google/multiberts-seed_3/1_num_of_masks",
+                    "google/multiberts-seed_0/2_num_of_masks", "google/multiberts-seed_3/2_num_of_masks"]
+
+    xcol_1, xticks_1, ycols_1 = get_plot_values(df, models, col_name="accuracy_1_num_mask")
+    xcol_2, xticks_2, ycols_2 = get_plot_values(df, models, col_name="accuracy_2_num_mask")
+    merged_ycols = ycols_1 + ycols_2
+
+    plot_results(
+        title="Multiberts - accuracy considering num of masks",
+        xlabel="step",
+        ylabel="accuracy",
+        xaxis_col=xcol_1,
+        yaxis_cols=merged_ycols,
+        xticks=xticks_1,
+        legend_names=legend_names,
+        results_filename="accuracy_plots/google_multiberts_accuracy_num_of_masks.png"
+    )
+
+
 def plot_pythia_average_acc():
     df_path = "../analysis/all_analysis.csv"
     df = pd.read_csv(df_path)
@@ -86,6 +109,28 @@ def plot_pythia_average_acc():
 
     # cols = ['model_name', 'model_step','false_mask1_avg', 'correct_mask1_avg', 'false_mask2_avg', 'correct_mask2_avg', 'accuracy_mask1', 'accuracy_mask2']
 
+def plot_pythia_average_acc_considering_num_of_masks():
+    df_path = "all_analysis_num_of_mask_vers.csv"
+    df = pd.read_csv(df_path)
+    models= ["EleutherAI/pythia-70m", "EleutherAI/pythia-410m", "EleutherAI/pythia-2.8b"]
+    legend_names = ["EleutherAI/pythia-70m/1_num_of_masks", "EleutherAI/pythia-410m/1_num_of_masks",
+                    "EleutherAI/pythia-2.8b/1_num_of_masks", "EleutherAI/pythia-70m/2_num_of_masks",
+                    "EleutherAI/pythia-410m/2_num_of_masks", "EleutherAI/pythia-2.8b/2_num_of_masks"]
+
+    xcol_1, xticks_1, ycols_1 = get_plot_values(df, models, col_name="accuracy_1_num_mask")
+    xcol_2, xticks_2, ycols_2 = get_plot_values(df, models, col_name="accuracy_2_num_mask")
+    merged_ycols = ycols_1 + ycols_2
+
+    plot_results(
+        title="Pythia - accuracy considering num of masks",
+        xlabel="step",
+        ylabel="accuracy",
+        xaxis_col=xcol_1,
+        yaxis_cols=merged_ycols,
+        xticks=xticks_1,
+        legend_names=legend_names,
+        results_filename="accuracy_plots/pythia_accuracy_num_of_masks.png"
+    )
 
 def apply_int_step_to_df(df_lst):
     for df in df_lst:
@@ -225,7 +270,9 @@ if __name__ == '__main__':
     # plot_bert_mask_1_false_scores_avg()
     # plot_bert_mask_1_correct_scores_avg()
     # plot_bert_mask_2_false_scores_avg()
-    plot_bert_mask_2_correct_scores_avg()
+    # plot_bert_mask_2_correct_scores_avg()
+    # plot_bert_average_acc_considering_num_of_masks()
+    plot_pythia_average_acc_considering_num_of_masks()
     # plot_results(None, "my title", "x title", "y title", [3,4,10], [[4,5,7], [2,3,6], [1,1,1]], ["name1", "name2", "name3"], "trial3.png")
 
 
