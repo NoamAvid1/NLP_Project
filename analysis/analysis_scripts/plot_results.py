@@ -4,14 +4,15 @@ from natsort import natsort_keygen
 from plot_utils import get_plot_values
 
 
-colors = ['green', 'purple', 'deepskyblue', 'orange', 'red', 'pink']
-
+COLORS = ['green', 'purple', 'deepskyblue', 'orange', 'red', 'pink', "deeppink", "limegreen"]
+ALL_MODELS =  ["google/multiberts-seed_0", "google/multiberts-seed_3",
+               "EleutherAI/pythia-70m", "EleutherAI/pythia-410m", "EleutherAI/pythia-2.8b"]
 
 def plot_results(title, xlabel, ylabel, xticks, xaxis_col, yaxis_cols, legend_names, results_filename):
     fig, ax = plt.subplots()
     lines = []
     for i,yaxis_col in enumerate(yaxis_cols):
-        line = ax.plot(xaxis_col, yaxis_col, color=colors[i], label= legend_names[i])
+        line = ax.plot(xaxis_col, yaxis_col, color=COLORS[i], label= legend_names[i])
         lines.append(line)
     ax.legend(loc='best', fontsize=8)
     ax.set_title(title, fontsize = 8)
@@ -22,7 +23,7 @@ def plot_results(title, xlabel, ylabel, xticks, xaxis_col, yaxis_cols, legend_na
 
 
 def plot_bert_average_acc():
-    df_path = "../analysis/all_analysis.csv"
+    df_path = "../all_analysis.csv"
     df = pd.read_csv(df_path)
     df = df[df["model_name"] == "google_multiberts-seed_3"]  # filter only bert models seed 0
     df.sort_values(by='model_step', inplace=True, key=natsort_keygen())
@@ -40,7 +41,7 @@ def plot_bert_average_acc():
 
 
 def plot_multiple_bert_average_acc():
-    df_path = "all_analysis.csv"
+    df_path = "../all_analysis.csv"
     df = pd.read_csv(df_path)
     models = ["google/multiberts-seed_0", "google/multiberts-seed_3"]
     # plot for mask 1
@@ -53,7 +54,7 @@ def plot_multiple_bert_average_acc():
         yaxis_cols=ycols,
         xticks=xticks,
         legend_names=models,
-        results_filename="accuracy_plots/google_multiberts_accuracy_mask_1.png"
+        results_filename="../accuracy_plots/google_multiberts_accuracy_mask_1.png"
     )
     # plot for mask 2
     xcol, xticks, ycols = get_plot_values(df, models, "accuracy_mask2")
@@ -65,11 +66,11 @@ def plot_multiple_bert_average_acc():
         yaxis_cols=ycols,
         xticks=xticks,
         legend_names=models,
-        results_filename="accuracy_plots/google_multiberts_accuracy_mask_2.png"
+        results_filename="../accuracy_plots/google_multiberts_accuracy_mask_2.png"
     )
 
 def plot_bert_average_acc_considering_num_of_masks():
-    df_path = "all_analysis_num_of_mask_vers.csv"
+    df_path = "../all_analysis_num_of_mask_vers.csv"
     df = pd.read_csv(df_path)
     models = ["google/multiberts-seed_0", "google/multiberts-seed_3"]
     legend_names = ["google/multiberts-seed_0/1_num_of_masks", "google/multiberts-seed_3/1_num_of_masks",
@@ -87,12 +88,12 @@ def plot_bert_average_acc_considering_num_of_masks():
         yaxis_cols=merged_ycols,
         xticks=xticks_1,
         legend_names=legend_names,
-        results_filename="accuracy_plots/google_multiberts_accuracy_num_of_masks.png"
+        results_filename="../accuracy_plots/google_multiberts_accuracy_num_of_masks.png"
     )
 
 
 def plot_pythia_average_acc():
-    df_path = "../analysis/all_analysis.csv"
+    df_path = "../all_analysis.csv"
     df = pd.read_csv(df_path)
     models= ["EleutherAI/pythia-70m", "EleutherAI/pythia-410m", "EleutherAI/pythia-2.8b"]
     xcol, xticks, ycols = get_plot_values(df, models)
@@ -104,13 +105,13 @@ def plot_pythia_average_acc():
         yaxis_cols=ycols,
         xticks=xticks,
         legend_names=models,
-        results_filename="accuracy_plots/pythia_accuracy.png"
+        results_filename="../accuracy_plots/pythia_accuracy.png"
     )
 
     # cols = ['model_name', 'model_step','false_mask1_avg', 'correct_mask1_avg', 'false_mask2_avg', 'correct_mask2_avg', 'accuracy_mask1', 'accuracy_mask2']
 
 def plot_pythia_average_acc_considering_num_of_masks():
-    df_path = "all_analysis_num_of_mask_vers.csv"
+    df_path = "../all_analysis_num_of_mask_vers.csv"
     df = pd.read_csv(df_path)
     models= ["EleutherAI/pythia-70m", "EleutherAI/pythia-410m", "EleutherAI/pythia-2.8b"]
     legend_names = ["EleutherAI/pythia-70m/1_num_of_masks", "EleutherAI/pythia-410m/1_num_of_masks",
@@ -129,8 +130,9 @@ def plot_pythia_average_acc_considering_num_of_masks():
         yaxis_cols=merged_ycols,
         xticks=xticks_1,
         legend_names=legend_names,
-        results_filename="accuracy_plots/pythia_accuracy_num_of_masks.png"
+        results_filename="../accuracy_plots/pythia_accuracy_num_of_masks.png"
     )
+
 
 def apply_int_step_to_df(df_lst):
     for df in df_lst:
@@ -165,7 +167,7 @@ def plot_animate_results():
             )
 
 def plot_pythia_false_scores_avg():
-    df_path = "../analysis/all_analysis.csv"
+    df_path = "../all_analysis.csv"
     df = pd.read_csv(df_path)
     models= ["EleutherAI/pythia-70m", "EleutherAI/pythia-410m", "EleutherAI/pythia-2.8b"]
     xcol, xticks, ycols = get_plot_values(df, models, col_name="false_mask1_avg")
@@ -177,11 +179,11 @@ def plot_pythia_false_scores_avg():
         yaxis_cols=ycols,
         xticks=xticks,
         legend_names=models,
-        results_filename="accuracy_plots/pythia_false_scores_avg.png"
+        results_filename="../accuracy_plots/pythia_false_scores_avg.png"
     )
 
 def plot_pythia_correct_scores_avg():
-    df_path = "../analysis/all_analysis.csv"
+    df_path = "../all_analysis.csv"
     df = pd.read_csv(df_path)
     models= ["EleutherAI/pythia-70m", "EleutherAI/pythia-410m", "EleutherAI/pythia-2.8b"]
     xcol, xticks, ycols = get_plot_values(df, models, col_name="correct_mask1_avg")
@@ -193,11 +195,11 @@ def plot_pythia_correct_scores_avg():
         yaxis_cols=ycols,
         xticks=xticks,
         legend_names=models,
-        results_filename="accuracy_plots/pythia_correct_scores_avg.png"
+        results_filename="../accuracy_plots/pythia_correct_scores_avg.png"
     )
 
 def plot_bert_mask_1_false_scores_avg():
-    df_path = "../analysis/all_analysis.csv"
+    df_path = "../all_analysis.csv"
     df = pd.read_csv(df_path)
     models = ["google/multiberts-seed_0", "google/multiberts-seed_3"]
     xcol, xticks, ycols = get_plot_values(df, models, col_name="false_mask1_avg")
@@ -209,11 +211,11 @@ def plot_bert_mask_1_false_scores_avg():
         yaxis_cols=ycols,
         xticks=xticks,
         legend_names=models,
-        results_filename="accuracy_plots/bert_mask_1_false_scores_avg.png"
+        results_filename="../accuracy_plots/bert_mask_1_false_scores_avg.png"
     )
 
 def plot_bert_mask_1_correct_scores_avg():
-    df_path = "../analysis/all_analysis.csv"
+    df_path = "../all_analysis.csv"
     df = pd.read_csv(df_path)
     models = ["google/multiberts-seed_0", "google/multiberts-seed_3"]
     xcol, xticks, ycols = get_plot_values(df, models, col_name="correct_mask1_avg")
@@ -225,11 +227,11 @@ def plot_bert_mask_1_correct_scores_avg():
         yaxis_cols=ycols,
         xticks=xticks,
         legend_names=models,
-        results_filename="accuracy_plots/bert_mask_1_correct_scores_avg.png"
+        results_filename="../accuracy_plots/bert_mask_1_correct_scores_avg.png"
     )
 
 def plot_bert_mask_2_false_scores_avg():
-    df_path = "../analysis/all_analysis.csv"
+    df_path = "../all_analysis.csv"
     df = pd.read_csv(df_path)
     models = ["google/multiberts-seed_0", "google/multiberts-seed_3"]
     xcol, xticks, ycols = get_plot_values(df, models, col_name="false_mask2_avg")
@@ -241,11 +243,11 @@ def plot_bert_mask_2_false_scores_avg():
         yaxis_cols=ycols,
         xticks=xticks,
         legend_names=models,
-        results_filename="accuracy_plots/bert_mask_2_false_scores_avg.png"
+        results_filename="../accuracy_plots/bert_mask_2_false_scores_avg.png"
     )
 
 def plot_bert_mask_2_correct_scores_avg():
-    df_path = "../analysis/all_analysis.csv"
+    df_path = "../all_analysis.csv"
     df = pd.read_csv(df_path)
     models = ["google/multiberts-seed_0", "google/multiberts-seed_3"]
     xcol, xticks, ycols = get_plot_values(df, models, col_name="correct_mask2_avg")
@@ -257,7 +259,7 @@ def plot_bert_mask_2_correct_scores_avg():
         yaxis_cols=ycols,
         xticks=xticks,
         legend_names=models,
-        results_filename="accuracy_plots/bert_mask_2_correct_scores_avg.png"
+        results_filename="../accuracy_plots/bert_mask_2_correct_scores_avg.png"
     )
 
 if __name__ == '__main__':
