@@ -262,6 +262,45 @@ def plot_bert_mask_2_correct_scores_avg():
         results_filename="../accuracy_plots/bert_mask_2_correct_scores_avg.png"
     )
 
+def plot_pythia_correct_false_ratio():
+    df_path = "../all_analysis.csv"
+    df = pd.read_csv(df_path)
+    models= ["EleutherAI/pythia-70m", "EleutherAI/pythia-410m", "EleutherAI/pythia-2.8b"]
+    xcol, xticks, ycols1 = get_plot_values(df, models, col_name="correct_mask1_avg")
+    xcol1, xticks1, ycols2 = get_plot_values(df, models, col_name="false_mask1_avg")
+    ycols = [ycols1[i]/ycols2[i] for i in range(len(ycols1))]
+
+    plot_results(
+        title="Pythia - Correct/False answer ratio",
+        xlabel="Step",
+        ylabel="Average Correct/False ratio",
+        xaxis_col=xcol,
+        yaxis_cols=ycols,
+        xticks=xticks,
+        legend_names=models,
+        results_filename="../ratio_plots/pythia_avg_ratio.png"
+    )
+
+def plot_bert_correct_false_ratio():
+    df_path = "../all_analysis.csv"
+    df = pd.read_csv(df_path)
+    models = ["google/multiberts-seed_0", "google/multiberts-seed_3"]
+    xcol, xticks, ycols1 = get_plot_values(df, models, col_name="correct_mask1_avg")
+    xcol1, xticks1, ycols2 = get_plot_values(df, models, col_name="false_mask1_avg")
+    ycols = [ycols1[i]/ycols2[i] for i in range(len(ycols1))]
+
+    plot_results(
+        title="Bert - Correct/False answer ratio",
+        xlabel="Step",
+        ylabel="Average Correct/False ratio",
+        xaxis_col=xcol,
+        yaxis_cols=ycols,
+        xticks=xticks,
+        legend_names=models,
+        results_filename="../ratio_plots/bert_avg_ratio.png"
+    )
+
+
 if __name__ == '__main__':
     # plot_bert_average_acc()
     # plot_multiple_bert_average_acc()
@@ -274,7 +313,9 @@ if __name__ == '__main__':
     # plot_bert_mask_2_false_scores_avg()
     # plot_bert_mask_2_correct_scores_avg()
     # plot_bert_average_acc_considering_num_of_masks()
-    plot_pythia_average_acc_considering_num_of_masks()
+    # plot_pythia_average_acc_considering_num_of_masks()
+    # plot_pythia_correct_false_ratio()
+    plot_bert_correct_false_ratio()
     # plot_results(None, "my title", "x title", "y title", [3,4,10], [[4,5,7], [2,3,6], [1,1,1]], ["name1", "name2", "name3"], "trial3.png")
 
 
