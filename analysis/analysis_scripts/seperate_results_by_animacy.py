@@ -12,5 +12,5 @@ if __name__ == '__main__':
         df['animacy_state'] = animacy_class_df['animacy_state']
         inanimate_df = df[df['animacy_state'] == 'both_animate']
         animate_df =  df[df['animacy_state'] == 'false_animate']
-        inanimate_df.to_csv(os.path.join(r'analysis\animate_state\inanimate_results',file))
-        animate_df.to_csv(os.path.join(r'analysis\animate_state\animate_results',file))
+        inanimate_df.to_csv(os.path.join(r'analysis\animate_state\both_animate_results',file))
+        animate_df.to_csv(os.path.join(r'analysis\animate_state\false_animate_results',file))
