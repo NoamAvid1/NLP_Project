@@ -146,8 +146,8 @@ def truncate_df_to_model_and_sort(df,model):
 
 
 def plot_animate_results_specific_model():
-    false_animate_df = pd.read_csv(r'analysis\animate_state\false_animate_analysis.csv')
-    both_animate_df = pd.read_csv(r'analysis\animate_state\both_animate_analysis.csv')
+    false_animate_df = pd.read_csv(r'..\animate_state\false_animate_analysis.csv')
+    both_animate_df = pd.read_csv(r'..\animate_state\both_animate_analysis.csv')
     criteria_names = {'correct_mask1_avg': 'correct answer average probability',\
                       'false_mask1_avg': 'false answer average probability' ,'accuracy_mask1':'Accuracy'}
     apply_int_step_to_df([false_animate_df,both_animate_df])
@@ -157,23 +157,23 @@ def plot_animate_results_specific_model():
         false_animated_df_model= truncate_df_to_model_and_sort(false_animate_df,model)
         both_animated_df_model= truncate_df_to_model_and_sort(both_animate_df,model)
         for criteria,name in criteria_names.items():
-            legend_names=["false animated", "both animated"]
-            ycols = [false_animated_df_model[criteria], both_animated_df_model[criteria]]
+            legend_names=["Both animate", "Correct Inanimate"]
+            ycols = [both_animated_df_model[criteria], false_animated_df_model[criteria]]
             xcols = false_animated_df_model["model_step_int"]
             if name == "Accuracy":
                 ycols.append([Human_baselines[0] for i in range(len(xcols))])
                 ycols.append([Human_baselines[1] for i in range(len(xcols))])
-                legend_names.append("Human both animated")
-                legend_names.append("Human false animated")                
+                legend_names.append("Human both animate")
+                legend_names.append("Human correct inanimate")
             plot_results(
-            title=f"Model {model}, Both Animated Vs False Animated- {name}",
+            title=f"Model {model}, Both Animate Vs Correct Inanimate {name}",
             xlabel="step",
             ylabel=name,
             xaxis_col=xcols,
             yaxis_cols= ycols,
             xticks=false_animated_df_model["model_step"],
             legend_names=legend_names,
-            results_filename=rf"analysis\animate_state\animated_graphs\{model}_{name}.png"
+            results_filename=rf"..\animate_state\animated_graphs\{model}_{name}.png"
             )
 
 def plot_animate_results_all_models_in_graph():
@@ -192,18 +192,18 @@ def plot_animate_results_all_models_in_graph():
             ycols = []
             xcol1, xticks1, ycols1 = get_plot_values(inanimate_df, models, col_name=criteria)
             ycols.extend(ycols1)
-            legend_names.extend([model+" Both animated" for model in models])
+            legend_names.extend([model+" Both animate" for model in models])
             xcol2, xticks2, ycols2 = get_plot_values(animate_df, models, col_name=criteria)
             ycols.extend(ycols2)
-            legend_names.extend([model+" False animated" for model in models])
+            legend_names.extend([model+" Correct inanimate" for model in models])
             if name == "Accuracy":
                 ycols.append([Human_baselines[0] for i in range(len(xcol1))])
                 ycols.append([Human_baselines[1] for i in range(len(xcol1))])
-                legend_names.append("Human both animated")
-                legend_names.append("Human false animated")                
+                legend_names.append("Human both animate")
+                legend_names.append("Human false animate")
             model_name = models[0].split('/')[1].split('-')[0].capitalize()
             plot_results(
-            title=f"{model_name}, Both Animated Vs False Animated- {name}",
+            title=f"{model_name}, Both Animate Vs Correct Inanimate- {name}",
             xlabel="step",
             ylabel=name,
             xaxis_col=xcol1,
