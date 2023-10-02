@@ -35,7 +35,7 @@ def validate_model_question_suffix(row: pd.Series):
     return model_question
 
 def main():
-    df_path = "../preprocessed_data/experiment_sentences_preprocessed - All merged.csv"
+    df_path = "../preprocessed_data/final_table/experiment_sentences_preprocessed - All merged.csv"
     df = pd.read_csv(df_path)
     df['model_question'] = df.apply(lambda row: validate_original_sentence_from_model_question(row), axis=1, result_type='expand')
     df['model_question'] = df.apply(lambda row: validate_model_question_suffix(row), axis=1, result_type='expand')

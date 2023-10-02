@@ -172,7 +172,7 @@ def parse_conf_file():
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('preprocessed_data/experiment_sentences_preprocessed - All merged.csv')
+    df = pd.read_csv('preprocessed_data/final_table/experiment_sentences_preprocessed - All merged.csv')
     parser = argparse.ArgumentParser()
     model_config_file = os.path.join('models_configs',parse_conf_file())
     models_config = {"model_types": []}
